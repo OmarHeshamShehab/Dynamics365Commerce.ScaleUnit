@@ -4,71 +4,71 @@ This document provides an overview of the files and code that make up the **Prod
 
 ---
 
-## ?? Project Files
+## ğŸ“ Project Files
 
-### 1?? `ProductAvailabilityPanel.html`
-This file describes how the panel **looks** on the screen — like drawing a picture of what you want to build.
+### 1ï¸âƒ£ `ProductAvailabilityPanel.html`
+This file describes how the panel **looks** on the screen â€” like drawing a picture of what you want to build.
 
-Let’s break it down:
+Letâ€™s break it down:
 
-#### ?? `<!DOCTYPE html>`
-- This tells the browser: “I’m writing an HTML5 page!”
+#### ğŸŒŸ `<!DOCTYPE html>`
+- This tells the browser: â€œIâ€™m writing an HTML5 page!â€
 
-#### ?? `<html lang="en">`
-- The outer wrapping for the page — like a big toy box holding everything.
-- `lang="en"` means: “We are using English.”
+#### ğŸŒŸ `<html lang="en">`
+- The outer wrapping for the page â€” like a big toy box holding everything.
+- `lang="en"` means: â€œWe are using English.â€
 
-#### ?? `<head>`
-- Like the brain of the page. It holds the title and rules (styles) but doesn’t show on the screen.
+#### ğŸŒŸ `<head>`
+- Like the brain of the page. It holds the title and rules (styles) but doesnâ€™t show on the screen.
 
 ##### Inside `<head>`:
 - `<meta charset="utf-8" />`  
-  Tells the computer: “This page uses special letters and symbols from the UTF-8 alphabet.”
+  Tells the computer: â€œThis page uses special letters and symbols from the UTF-8 alphabet.â€
 - `<title></title>`  
   The name of the page (shows up in browser tabs). This one is empty for now.
 - `<style>...</style>`  
   A list of **rules** that tell parts of the page how to look or act.
 
-##### ?? CSS Styles:
+##### ğŸ“Œ CSS Styles:
 - `html, body { height: 100%; margin: 0; padding: 0; }`  
-  ?? Make the whole page fill the space. Remove gaps (margins, padding) around it.
+  ğŸ‘‰ Make the whole page fill the space. Remove gaps (margins, padding) around it.
 
 - `#Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel { display: flex; flex-direction: column; height: 100%; }`  
-  ?? The big box (the panel) stacks its pieces like building blocks (one on top of the other) and fills the space.
+  ğŸ‘‰ The big box (the panel) stacks its pieces like building blocks (one on top of the other) and fills the space.
 
 - `#Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_DataList { flex: 1; overflow-y: auto; }`  
-  ?? The data area (where we list stores) takes up leftover space and gets a scroll bar if there’s too much stuff.
+  ğŸ‘‰ The data area (where we list stores) takes up leftover space and gets a scroll bar if thereâ€™s too much stuff.
 
 ---
 
-#### ?? `<body>`
-- The body is what we actually see — like the front of the toy box.
+#### ğŸŒŸ `<body>`
+- The body is what we actually see â€” like the front of the toy box.
 
 ##### Inside `<body>`:
 - `<div id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel" type="text/html">`  
-  ?? The big panel. It has an ID (name tag) so we can style or find it easily.  
-  ?? `type="text/html"` is extra info about what kind of content it holds.
+  ğŸ‘‰ The big panel. It has an ID (name tag) so we can style or find it easily.  
+  ğŸ‘‰ `type="text/html"` is extra info about what kind of content it holds.
 
 - `<h2>` (the title of our panel):  
-  ?? Shows the title text (like “Product Availability”).  
-  ?? `class="marginTop8 marginBottom8"`: Adds space above and below.  
-  ?? `data-bind="text: title"`: A magic helper (Knockout binding) that puts in the title automatically.  
-  ?? `id="..._TitleElement"`: Another name tag for styling or scripting.
+  ğŸ‘‰ Shows the title text (like â€œProduct Availabilityâ€).  
+  ğŸ‘‰ `class="marginTop8 marginBottom8"`: Adds space above and below.  
+  ğŸ‘‰ `data-bind="text: title"`: A magic helper (Knockout binding) that puts in the title automatically.  
+  ğŸ‘‰ `id="..._TitleElement"`: Another name tag for styling or scripting.
 
 - `<div id="..._DataList" class="width400 grow col">`  
-  ?? This is where our table of store availability appears.  
-  ?? `class="width400 grow col"`: Says how wide it is (400), that it grows, and that it stacks things vertically.  
-  ?? A special POS control (like a mini table) will be placed here by the script.
+  ğŸ‘‰ This is where our table of store availability appears.  
+  ğŸ‘‰ `class="width400 grow col"`: Says how wide it is (400), that it grows, and that it stacks things vertically.  
+  ğŸ‘‰ A special POS control (like a mini table) will be placed here by the script.
 
 ---
 
-### 2?? `ProductAvailabilityPanel.ts`
-This file tells the panel **how to behave** — like giving instructions to build or play with your toy.
+### 2ï¸âƒ£ `ProductAvailabilityPanel.ts`
+This file tells the panel **how to behave** â€” like giving instructions to build or play with your toy.
 
-#### ?? Concepts in the TypeScript code:
+#### ğŸŒŸ Concepts in the TypeScript code:
 
 ##### Classes and Constructor
-- **Class** = Cookie cutter ? makes many panels that work the same.
+- **Class** = Cookie cutter â†’ makes many panels that work the same.
 - **Constructor** = The steps to build the panel.
 
 ##### Interface
@@ -81,11 +81,11 @@ This file tells the panel **how to behave** — like giving instructions to build 
 - Like magic buttons that make things happen again and again.
 
 ##### If Statement
-- The computer asking: “If this is true, what should I do?”
+- The computer asking: â€œIf this is true, what should I do?â€
 
 ##### Promise (`then` / `catch`)
-- `then` = “When my friend brings the toy, I’ll play.”
-- `catch` = “If my friend trips, I’ll help.”
+- `then` = â€œWhen my friend brings the toy, Iâ€™ll play.â€
+- `catch` = â€œIf my friend trips, Iâ€™ll help.â€
 
 ##### Importing Helpers
 - **SimpleProductDetailsCustomControlBase**: Recipe for making our POS panel.
@@ -107,7 +107,7 @@ This file tells the panel **how to behave** — like giving instructions to build 
 
 ---
 
-## ?? Summary
+## ğŸ’¡ Summary
 
 - **HTML** describes what the panel looks like (the picture).
 - **TypeScript** tells the panel how it works (the instructions).
