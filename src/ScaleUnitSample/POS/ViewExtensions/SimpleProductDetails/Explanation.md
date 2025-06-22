@@ -130,10 +130,10 @@ function add(a: number, b: number): number {
 
 const result1 = add(2, 3);  // result1 = 5
 
-// Arrow function version
-const addArrow = (a: number, b: number): number => a + b;
+💡 **Arrow => function example**
+const addArrow => (a: number, b: number): number => a + b;
 
-const result2 = addArrow(2, 3);  // result2 = 5
+const result2 => addArrow(2, 3);  // result2 = 5
 
 
 #### If statement
