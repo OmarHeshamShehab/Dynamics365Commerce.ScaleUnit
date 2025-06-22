@@ -1,41 +1,81 @@
 ﻿<!DOCTYPE html>
+<!-- Tells the browser this is an HTML5 document -->
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<!-- Root element of the page; specifies English language and XML namespace -->
+
 <head>
     <meta charset="utf-8" />
+    <!-- Defines character encoding as UTF-8 so all standard characters display correctly -->
+
     <title></title>
+    <!-- The title of the page (shows in browser tab); empty for now -->
+
     <style>
-        /* allow % heights to work and remove default margins */
+        /*
+         * Make sure the HTML and body fill 100% of the available height
+         * and remove default spacing around them
+         */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
         }
 
-        /* make the panel a column flex-box filling 100% of its parent */
+        /*
+         * Style the main panel:
+         * - display as a flex container (column direction)
+         * - fill 100% of the parent container's height
+         */
         #Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel {
             display: flex;
             flex-direction: column;
             height: 100%;
         }
 
-        /* let the DataList take up all remaining space and get a scrollbar */
+        /*
+         * Style the DataList area:
+         * - take up remaining space (flex: 1)
+         * - allow vertical scrolling if content overflows
+         */
         #Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_DataList {
             flex: 1;
             overflow-y: auto;
         }
     </style>
 </head>
+
 <body>
+    <!-- The visible part of the page -->
+
     <div id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel"
          type="text/html">
+        <!--
+             Main container div for the product availability panel
+             - Uses a unique ID for styling and scripting
+             - type attribute describes the content (optional here)
+        -->
+
         <h2 class="marginTop8 marginBottom8"
             data-bind="text: title"
             id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_TitleElement">
+            <!--
+                 Panel title
+                 - class adds vertical margins (spacing above and below)
+                 - data-bind connects to Knockout to insert dynamic title text
+                 - id allows targeted styling or scripting
+            -->
             <!-- Knockout will replace this with your title -->
         </h2>
+
         <div class="width400 grow col"
              id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_DataList">
+            <!--
+                 Container for the data list (like a table of availability)
+                 - class defines width and layout behavior
+                 - id used for styling and scripting
+                 - DataList will be dynamically inserted here
+            -->
             <!-- DataList is injected here -->
         </div>
     </div>
