@@ -21,7 +21,7 @@ This document provides an overview of the files and code that make up the **Prod
     - [Interface](#interface)
     - [Array (or list)](#array-or-list)
     - [Function (or method)](#function-or-method)
-    - [If statement/Ternary Operator](#if-statement)
+    - [If statement / Ternary Operator](#if-statement)
     - [Promise](#promise)
     - [Readonly](#readonly)
     - [Import](#import)
