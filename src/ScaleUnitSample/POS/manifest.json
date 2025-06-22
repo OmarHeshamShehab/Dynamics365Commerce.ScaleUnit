@@ -18,6 +18,17 @@
           "productAppBarCommands": [
             { "modulePath": "ViewExtensions/Search/NavigateToExampleViewCommand" }
           ]
+        },
+        "SimpleProductDetailsView": {
+          "controlsConfig": {
+            "customControls": [
+              {
+              "controlName": "ProductAvailabilityPanel",
+              "htmlPath": "ViewExtensions/SimpleProductDetails/ProductAvailabilityPanel.html",
+              "modulePath": "ViewExtensions/SimpleProductDetails/ProductAvailabilityPanel"
+              }
+            ]
+          }
         }
       }
     },
