@@ -122,8 +122,8 @@ We can press it again and again to do the same thing.
 
 An arrow function is a shorter way to write a function. It often looks cleaner and is easier to read, especially for small, simple functions.
 
-// Normal function example
-```ts
+💡 **Normal function example**
+
 function add(a: number, b: number): number {
   return a + b;
 }
