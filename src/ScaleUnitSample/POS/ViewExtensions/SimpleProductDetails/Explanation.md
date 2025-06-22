@@ -120,22 +120,6 @@ We can look inside each box by its number (first box, second box, etc).
 A function is like a magic button. When we press it, something happens.
 We can press it again and again to do the same thing.
 
-
-An arrow function is a shorter way to write a function. It often looks cleaner and is easier to read, especially for small, simple functions.
-<!--->
-💡 **Normal function example**
-```ts
-function add(a: number, b: number): number {
-  return a + b;
-}
-
-const result = add(2, 3);  // result = 5
-
-const add = (a: number, b: number): number => a + b;
-
-const result = add(2, 3);  // result = 5
-<--->
-
 #### If statement
 
 An if is like asking “If it’s sunny, can I go outside and play?” The computer checks if it’s sunny and decides what to do.
