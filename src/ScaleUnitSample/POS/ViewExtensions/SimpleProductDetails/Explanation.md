@@ -122,7 +122,7 @@ We can press it again and again to do the same thing.
 
 
 An **arrow function** is a shorter way to write a function. It often looks cleaner and is easier to read, especially for small, simple functions.
-
+<!--->
 💡 **Normal function example**
 ```ts
 function add(a: number, b: number): number {
@@ -134,7 +134,7 @@ const result = add(2, 3);  // result = 5
 const add = (a: number, b: number): number => a + b;
 
 const result = add(2, 3);  // result = 5
-
+<--->
 
 #### If statement
 
