@@ -93,18 +93,10 @@ This tells the browser: “I’m writing an HTML5 page!”
 
 ### 2️⃣ ProductAvailabilityPanel.ts
 
-```
-/*
- * Code EXPLANATION:
- * 
- * In this code we are building a panel (a special box on the screen) that shows where a product is available.
- * Let’s look at the important programming ideas in this code:
- */
-```
 
 #### Class
 
-A class is like a cookie cutter. It gives you the shape for a cookie. We can use it to make many cookies that look the same.  
+A class is like a cookie cutter. It gives you the shape for a cookie. We can use it to make many cookies that look the same.
 In code, a class helps us make many objects that work the same way.
 
 #### Constructor
@@ -113,17 +105,18 @@ A constructor is like instructions for building a new toy. When we want to make 
 
 #### Interface
 
-An interface is like a plan or drawing that shows what parts a house needs (like doors and windows), but it doesn’t build the house.  
+An interface is like a plan or drawing that shows what parts a house needs (like doors and windows),but it doesn’t build the house. 
 In code, it tells us what parts an object should have.
+ 
 
 #### Array (or list)
 
-An array is like a row of toy boxes. Each box has something inside (like numbers or words).  
+An array is like a row of toy boxes. Each box has something inside (like numbers or words).
 We can look inside each box by its number (first box, second box, etc).
 
 #### Function (or method)
 
-A function is like a magic button. When we press it, something happens.  
+A function is like a magic button. When we press it, something happens.
 We can press it again and again to do the same thing.
 
 #### If statement
@@ -132,11 +125,11 @@ An if is like asking “If it’s sunny, can I go outside and play?” The compu
 
 #### Promise
 
--> .then: Imagine you ask your friend to get a toy from another room. You don’t know how long it will take.  
-When your friend comes back, you want to play with the toy. .then is like saying, “When you come back, I want to play with the toy.”
-
--> .catch: Sometimes your friend might trip and not bring the toy. .catch is like saying, “If something goes wrong, tell me so I can help or try again.”  
-In code, .catch is used to handle errors.
+-> .then: Imagine you ask your friend to get a toy from another room. You don’t know how long it will take.
+ When your friend comes back, you want to play with the toy. .then is like saying, “When you come back, I want to play with the toy.”
+ 
+-> .catch: Sometimes your friend might trip and not bring the toy. .catch is like saying, “If something goes wrong,
+tell me so I can help or try again.” In code, .catch is used to handle errors.
 
 #### Import
 
