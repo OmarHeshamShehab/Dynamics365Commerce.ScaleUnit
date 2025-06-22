@@ -21,7 +21,7 @@ This document provides an overview of the files and code that make up the **Prod
     - [Interface](#interface)
     - [Array (or list)](#array-or-list)
     - [Function (or method)](#function-or-method)
-    - [If statement](#if-statement)
+    - [If statement/Ternary Operator](#if-statement)
     - [Promise](#promise)
     - [Readonly](#readonly)
     - [Import](#import)
@@ -136,9 +136,35 @@ const addArrow => (a: number, b: number): number => a + b;
 const result2 => addArrow(2, 3);  // result2 = 5
 
 
-#### If statement
+#### If statement / Ternary Operator
 
 An if is like asking “If it’s sunny, can I go outside and play?” The computer checks if it’s sunny and decides what to do.
+
+💡 **Ternary Operator**
+
+condition ? expressionIfTrue : expressionIfFalse
+
+let num: number = 5;
+
+let result: string = num > 0 ? "Positive" : "Non-positive";
+
+console.log(result);  // Output: "Positive"
+
+If num > 0 is true, result is "Positive". Otherwise, it is "Non-positive".
+
+💡 **Equivalent Normal if Statement**
+
+let num: number = 5;
+let result: string;
+
+if (num > 0) {
+    result = "Positive";
+} else {
+    result = "Non-positive";
+}
+
+console.log(result);  // Output: "Positive"
+
 
 #### Promise
 
