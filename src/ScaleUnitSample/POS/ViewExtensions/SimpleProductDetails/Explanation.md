@@ -20,9 +20,11 @@ This document provides an overview of the files and code that make up the **Prod
     - [Constructor](#constructor)
     - [Interface](#interface)
     - [Array (or list)](#array-or-list)
-    - [Function (or method)](#function-or-method)
+    - [Function (or method)](#function-or-method) 
+    - [Arrow functions (`=>`) vs normal functions](#arrow functions (`=>`) vs normal functions) 
     - [If statement](#if-statement)
     - [Promise](#promise)
+    - [Readonly](#readonly)
     - [Import](#import)
     - [Control Handlers](#control-handlers)
     - [Template ID](#template-id)
@@ -119,6 +121,23 @@ We can look inside each box by its number (first box, second box, etc).
 A function is like a magic button. When we press it, something happens.
 We can press it again and again to do the same thing.
 
+#### Arrow functions (`=>`) vs normal functions
+
+An **arrow function** is a shorter way to write a function. It often looks cleaner and is easier to read, especially for small, simple functions.
+
+💡 **Normal function example**
+```ts
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const result = add(2, 3);  // result = 5
+
+const add = (a: number, b: number): number => a + b;
+
+const result = add(2, 3);  // result = 5
+
+
 #### If statement
 
 An if is like asking “If it’s sunny, can I go outside and play?” The computer checks if it’s sunny and decides what to do.
@@ -130,6 +149,15 @@ An if is like asking “If it’s sunny, can I go outside and play?” The compu
  
 -> .catch: Sometimes your friend might trip and not bring the toy. .catch is like saying, “If something goes wrong,
 tell me so I can help or try again.” In code, .catch is used to handle errors.
+
+#### Readonly<T>
+
+`Readonly<T>` is like putting a **"Do Not Touch!" sticker** on a box of data (an object). It means you can look at what’s inside the box, but you can’t change anything.
+
+- `T` is a placeholder for the type of the box you want to protect.
+- `Readonly<Controls.IDataListOptions<ProxyEntities.OrgUnitAvailability>>` means:
+  👉 A data list options object made for `OrgUnitAvailability`, with all its settings locked so they can’t be changed.
+
 
 #### Import
 
