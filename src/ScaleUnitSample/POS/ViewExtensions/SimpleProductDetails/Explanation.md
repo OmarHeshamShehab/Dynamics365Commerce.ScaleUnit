@@ -20,8 +20,7 @@ This document provides an overview of the files and code that make up the **Prod
     - [Constructor](#constructor)
     - [Interface](#interface)
     - [Array (or list)](#array-or-list)
-    - [Function (or method)](#function-or-method) 
-    - [Arrow functions (`=>`) vs normal functions](#arrow functions (`=>`) vs normal functions) 
+    - [Function (or method)](#function-or-method)
     - [If statement](#if-statement)
     - [Promise](#promise)
     - [Readonly](#readonly)
@@ -121,7 +120,6 @@ We can look inside each box by its number (first box, second box, etc).
 A function is like a magic button. When we press it, something happens.
 We can press it again and again to do the same thing.
 
-#### Arrow functions (`=>`) vs normal functions
 
 An **arrow function** is a shorter way to write a function. It often looks cleaner and is easier to read, especially for small, simple functions.
 
