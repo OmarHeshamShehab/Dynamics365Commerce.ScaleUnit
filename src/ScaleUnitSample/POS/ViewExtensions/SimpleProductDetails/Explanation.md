@@ -6,27 +6,27 @@ This document provides an overview of the files and code that make up the **Prod
 
 ## 📑 Table of Contents
 
-- [📁 Project Files](#-project-files)  
-  - [1️⃣ ProductAvailabilityPanel.html](#1️⃣-productavailabilitypanelhtml)  
-    - [🌟 <!DOCTYPE html>](#🌟-doctype-html)  
-    - [🌟 <html lang="en">](#🌟-html-langen)  
-    - [🌟 <head>](#🌟-head)  
-      - [Inside <head>](#inside-head)  
-      - [📌 CSS Styles](#-css-styles)  
-    - [🌟 <body>](#🌟-body)  
-      - [Inside <body>](#inside-body)  
-  - [2️⃣ ProductAvailabilityPanel.ts](#2️⃣-productavailabilitypanelts)  
-    - [--- Class ---](#---class---)  
-    - [--- Constructor ---](#---constructor---)  
-    - [--- Interface ---](#---interface---)  
-    - [--- Array (or list) ---](#---array-or-list---)  
-    - [--- Function (or method) ---](#---function-or-method---)  
-    - [--- If statement ---](#---if-statement---)  
-    - [--- Promise ---](#---promise---)  
-    - [--- Import ---](#---import---)  
-    - [--- Control Handlers ---](#---control-handlers---)  
-    - [--- Template ID ---](#---template-id---)  
-    - [--- Correlation ID ---](#---correlation-id---)  
+- [📁 Project Files](#project-files)
+  - [1️⃣ ProductAvailabilityPanel.html](#1️⃣-productavailabilitypanelhtml)
+    - [🌟 DOCTYPE html](#🌟-doctype-html)
+    - [🌟 html lang="en"](#🌟-html-langen)
+    - [🌟 head](#🌟-head)
+      - [Inside head](#inside-head)
+      - [📌 CSS Styles](#📌-css-styles)
+    - [🌟 body](#🌟-body)
+      - [Inside body](#inside-body)
+  - [2️⃣ ProductAvailabilityPanel.ts](#2️⃣-productavailabilitypanelts)
+    - [Class](#class)
+    - [Constructor](#constructor)
+    - [Interface](#interface)
+    - [Array (or list)](#array-or-list)
+    - [Function (or method)](#function-or-method)
+    - [If statement](#if-statement)
+    - [Promise](#promise)
+    - [Import](#import)
+    - [Control Handlers](#control-handlers)
+    - [Template ID](#template-id)
+    - [Correlation ID](#correlation-id)
 - [💡 Summary](#💡-summary)
 
 ---
@@ -37,20 +37,20 @@ This document provides an overview of the files and code that make up the **Prod
 
 This file describes how the panel **looks** on the screen — like drawing a picture of what you want to build.
 
-#### 🌟 <!DOCTYPE html>
+#### 🌟 DOCTYPE html
 
 This tells the browser: “I’m writing an HTML5 page!”
 
-#### 🌟 <html lang="en">
+#### 🌟 html lang="en"
 
 - The outer wrapping for the page — like a big toy box holding everything.
 - `lang="en"` means: “We are using English.”
 
-#### 🌟 <head>
+#### 🌟 head
 
 - Like the brain of the page. It holds the title and rules (styles) but doesn’t show on the screen.
 
-##### Inside <head>
+##### Inside head
 
 - `<meta charset="utf-8" />`  
   Tells the computer: “This page uses special letters and symbols from the UTF-8 alphabet.”
@@ -70,11 +70,11 @@ This tells the browser: “I’m writing an HTML5 page!”
 
 ---
 
-#### 🌟 <body>
+#### 🌟 body
 
 - The body is what we actually see — like the front of the toy box.
 
-##### Inside <body>
+##### Inside body
 
 - `<div id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel" type="text/html">`  
   👉 The big panel. It has an ID (name tag) so we can style or find it easily.  
@@ -102,35 +102,35 @@ This tells the browser: “I’m writing an HTML5 page!”
  */
 ```
 
-#### --- Class ---
+#### Class
 
 A class is like a cookie cutter. It gives you the shape for a cookie. We can use it to make many cookies that look the same.  
 In code, a class helps us make many objects that work the same way.
 
-#### --- Constructor ---
+#### Constructor
 
 A constructor is like instructions for building a new toy. When we want to make a new panel, we follow these steps to build it.
 
-#### --- Interface ---
+#### Interface
 
 An interface is like a plan or drawing that shows what parts a house needs (like doors and windows), but it doesn’t build the house.  
 In code, it tells us what parts an object should have.
 
-#### --- Array (or list) ---
+#### Array (or list)
 
 An array is like a row of toy boxes. Each box has something inside (like numbers or words).  
 We can look inside each box by its number (first box, second box, etc).
 
-#### --- Function (or method) ---
+#### Function (or method)
 
 A function is like a magic button. When we press it, something happens.  
 We can press it again and again to do the same thing.
 
-#### --- If statement ---
+#### If statement
 
 An if is like asking “If it’s sunny, can I go outside and play?” The computer checks if it’s sunny and decides what to do.
 
-#### --- Promise ---
+#### Promise
 
 -> .then: Imagine you ask your friend to get a toy from another room. You don’t know how long it will take.  
 When your friend comes back, you want to play with the toy. .then is like saying, “When you come back, I want to play with the toy.”
@@ -138,7 +138,7 @@ When your friend comes back, you want to play with the toy. .then is like saying
 -> .catch: Sometimes your friend might trip and not bring the toy. .catch is like saying, “If something goes wrong, tell me so I can help or try again.”  
 In code, .catch is used to handle errors.
 
-#### --- Import ---
+#### Import
 
 Importing is like bringing your favorite toys or tools from another room so you can play or build with them here.  
 Each import brings us something useful:
@@ -173,17 +173,17 @@ Each import brings us something useful:
 - Controls: These are all the buttons, lists, and pieces we can use to build what we see on the screen.  
   🛍 In Commerce: Provides UI controls (like data lists, buttons, inputs) you can create in POS to display and interact with data.
 
-#### --- Control Handlers ---
+#### Control Handlers
 
 -> DataList: This is like a table or chart that shows our toy boxes neatly lined up, so we can see what’s in each one.  
 🛍 In Commerce: A standard POS control that displays rows of data (e.g., product availability per store) in a table/grid format.
 
-#### --- Template ID ---
+#### Template ID
 
 The template ID is like the name of our drawing or design we want to copy and use.  
 🛍 In Commerce: Identifies the HTML template used for the custom panel layout.
 
-#### --- Correlation ID ---
+#### Correlation ID
 
 A correlation ID is like putting a sticker with a number on each letter we send, so we can tell which reply matches which letter.  
 🛍 In Commerce: A unique ID for each operation or request, useful for tracing and debugging actions in logs.
