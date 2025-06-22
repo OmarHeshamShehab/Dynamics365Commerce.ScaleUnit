@@ -5,16 +5,24 @@
     <meta charset="utf-8" />
     <title></title>
     <style>
-        /* make the whole panel a column-flex box of fixed height */
+        /* allow % heights to work and remove default margins */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* make the panel a column flex-box filling 100% of its parent */
         #Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel {
             display: flex;
             flex-direction: column;
-            height: 300px; /* or whatever total height you want */
+            height: 100%;
         }
-        /* let the DataList take up all remaining space and scroll */
+
+        /* let the DataList take up all remaining space and get a scrollbar */
         #Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_DataList {
-            flex: 1; /* grow to fill remaining space */
-            overflow-y: auto; /* vertical scrollbar when content overflows */
+            flex: 1;
+            overflow-y: auto;
         }
     </style>
 </head>
@@ -24,9 +32,11 @@
         <h2 class="marginTop8 marginBottom8"
             data-bind="text: title"
             id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_TitleElement">
+            <!-- Knockout will replace this with your title -->
         </h2>
         <div class="width400 grow col"
              id="Contos_Pos_Extensibility_Samples_ProductAvailabilityPanel_DataList">
+            <!-- DataList is injected here -->
         </div>
     </div>
 </body>
