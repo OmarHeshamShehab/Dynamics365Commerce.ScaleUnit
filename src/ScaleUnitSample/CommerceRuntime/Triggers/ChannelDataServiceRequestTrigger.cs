@@ -10,6 +10,7 @@
 namespace Contoso.CommerceRuntime.Triggers
 {
     using Microsoft.Dynamics.Commerce.Runtime;
+    using Microsoft.Dynamics.Commerce.Runtime.Data;
     using Microsoft.Dynamics.Commerce.Runtime.DataModel;
     using Microsoft.Dynamics.Commerce.Runtime.DataServices.Messages;
     using Microsoft.Dynamics.Commerce.Runtime.Messages;
@@ -36,6 +37,7 @@ namespace Contoso.CommerceRuntime.Triggers
                 return new Type[]
                 {
                         typeof(GetChannelConfigurationDataRequest),
+                        typeof(SearchCustomersDataRequest)
                 };
             }
         }
@@ -80,6 +82,42 @@ namespace Contoso.CommerceRuntime.Triggers
                         }
                     }
                     break;
+                case SearchCustomersDataRequest getCustomerSearchResultDataRequest:
+                    var res = (EntityDataServiceResponse<GlobalCustomer>)response;
+                    foreach (var item in res)
+                    {
+                        string value = "";
+
+                        // Wrap in using so DatabaseContext is disposed
+                        using (var databaseContext = new DatabaseContext(request.RequestContext))
+                        {
+                            // camel?cased to match your call
+                            var configurationDataParameters = new ParameterSet
+                            {
+                                ["@AccountNum"] = item.AccountNumber
+                            };
+
+                            // Add ConfigureAwait(false) here
+                            var configurationDataSet = await databaseContext
+                                .ExecuteQueryDataSetAsync(
+                                    "SELECT REFNOEXT FROM ext.CONTOSOCUSTTABLEEXTENSION WHERE ACCOUNTNUM = @AccountNum",
+                                    configurationDataParameters)
+                                .ConfigureAwait(false);
+
+                            if (configurationDataSet.Tables[0].Rows.Count > 0)
+                            {
+                                value = configurationDataSet.Tables[0].Rows[0][0] as string;
+                            }
+                        }  // databaseContext.Dispose() called automatically here
+
+                        item.ExtensionProperties.Add(new CommerceProperty()
+                        {
+                            Key = "RefNoExt",
+                            Value = value
+                        });
+                    }
+                    break;
+
                 default:
                     throw new NotSupportedException($"Request '{request.GetType()}' is not supported.");
             }
