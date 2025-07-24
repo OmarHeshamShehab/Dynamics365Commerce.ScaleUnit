@@ -1,5 +1,5 @@
 -- ============================================================
--- Script Name : 0004_CreateCustTableView.sql
+-- Script Name : 0002_CreateCustTableView.sql
 -- Description : Creates a view joining CUSTTABLE with its
 --               extension table to expose REFNOEXT and
 --               extended AccountNum fields

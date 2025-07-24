@@ -1,115 +1,150 @@
+// ============================================================================
+// SAMPLE CODE NOTICE
+// 
+// THIS SAMPLE CODE IS MADE AVAILABLE AS IS.  MICROSOFT MAKES NO WARRANTIES, WHETHER EXPRESS OR IMPLIED,
+// OF FITNESS FOR A PARTICULAR PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OR CONDITIONS OF MERCHANTABILITY.
+// THE ENTIRE RISK OF THE USE OR THE RESULTS FROM THE USE OF THIS SAMPLE CODE REMAINS WITH THE USER.
+// NO TECHNICAL SUPPORT IS PROVIDED.  YOU MAY NOT DISTRIBUTE THIS CODE UNLESS YOU HAVE A LICENSE AGREEMENT WITH MICROSOFT THAT ALLOWS YOU TO DO SO.
+// ============================================================================
+
 /**
- * SAMPLE CODE NOTICE
- * 
- * THIS SAMPLE CODE IS MADE AVAILABLE AS IS.  MICROSOFT MAKES NO WARRANTIES, WHETHER EXPRESS OR IMPLIED,
- * OF FITNESS FOR A PARTICULAR PURPOSE, OF ACCURACY OR COMPLETENESS OF RESPONSES, OF RESULTS, OR CONDITIONS OF MERCHANTABILITY.
- * THE ENTIRE RISK OF THE USE OR THE RESULTS FROM THE USE OF THIS SAMPLE CODE REMAINS WITH THE USER.
- * NO TECHNICAL SUPPORT IS PROVIDED.  YOU MAY NOT DISTRIBUTE THIS CODE UNLESS YOU HAVE A LICENSE AGREEMENT WITH MICROSOFT THAT ALLOWS YOU TO DO SO.
+ * Detailed Summary:
+ * -----------------
+ * This asynchronous request trigger extends the Commerce Runtime pipeline to augment channel
+ * configuration and customer search results with custom extension data in a thread-safe manner.
+ * It intercepts two specific data service requests:
+ *   1. GetChannelConfigurationDataRequest: Adds a collection of RetailConfigurationParameters
+ *      to the cached ChannelConfiguration entity under the key "ExtConfigurationParameters".
+ *      Utilizes a lock to avoid concurrent modifications on the shared cache object.
+ *   2. SearchCustomersDataRequest: After retrieving GlobalCustomer entities, queries a
+ *      custom SQL table (ext.CONTOSOCUSTTABLEEXTENSION) to fetch a RefNoExt value per
+ *      customer based on AccountNumber. Wraps DatabaseContext in a using block to ensure
+ *      disposal, and populates each customer's ExtensionProperties with a CommerceProperty.
+ *
+ * Key Features:
+ *   - Thread Safety: Uses lock on the ChannelConfiguration instance to prevent 100% CPU usage
+ *     caused by concurrent SetProperty calls on cached objects.
+ *   - Asynchronous Execution: Implements IRequestTriggerAsync and uses ConfigureAwait(false)
+ *     for both service and SQL queries to avoid deadlocks and optimize responsiveness.
+ *   - Extensibility: Adds or updates extension properties without altering the core CRT code,
+ *     enabling future enhancements via additional request triggers.
  */
 
 namespace Contoso.CommerceRuntime.Triggers
 {
-    using Microsoft.Dynamics.Commerce.Runtime;
-    using Microsoft.Dynamics.Commerce.Runtime.Data;
-    using Microsoft.Dynamics.Commerce.Runtime.DataModel;
-    using Microsoft.Dynamics.Commerce.Runtime.DataServices.Messages;
-    using Microsoft.Dynamics.Commerce.Runtime.Messages;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+    using Microsoft.Dynamics.Commerce.Runtime;              // Core CRT runtime types (Request, Response, triggers)
+    using Microsoft.Dynamics.Commerce.Runtime.Data;         // Data access abstractions (DatabaseContext)
+    using Microsoft.Dynamics.Commerce.Runtime.DataModel;    // Entity models (ChannelConfiguration, GlobalCustomer)
+    using Microsoft.Dynamics.Commerce.Runtime.DataServices.Messages; // Data service request/response messages
+    using Microsoft.Dynamics.Commerce.Runtime.Messages;     // Base request/response types
+    using System;                                          // Fundamental .NET types
+    using System.Collections.Generic;                      // Collection interfaces
+    using System.Linq;                                     // LINQ extensions for collections
+    using System.Threading.Tasks;                         // Task-based asynchronous programming
 
     /// <summary>
-    /// In this sample trigger, we will add property to channelConfiguartion in a thread-safe manner.
-    /// That's important since channelConfiguration is a cached object, and concurrent modification on it can cause 100% CPU usage.
+    /// Trigger to inject custom configuration and customer extension data into CRT responses.
+    /// Implements IRequestTriggerAsync to hook into pre- and post-execution pipelines.
     /// </summary>
     public class ChannelDataServiceRequestTrigger : IRequestTriggerAsync
     {
+        // Constant key under which the extension parameters are stored
         public static readonly string PropertyKey = "ExtConfigurationParameters";
 
         /// <summary>
-        /// Gets the supported requests for this trigger.
+        /// Specifies the data service request types this trigger will handle.
         /// </summary>
         public IEnumerable<Type> SupportedRequestTypes
         {
             get
             {
+                // Return only the requests we want to intercept:
+                //  - GetChannelConfigurationDataRequest: enrich channel config
+                //  - SearchCustomersDataRequest: enrich customer entities
                 return new Type[]
                 {
-                        typeof(GetChannelConfigurationDataRequest),
-                        typeof(SearchCustomersDataRequest)
+                    typeof(GetChannelConfigurationDataRequest),
+                    typeof(SearchCustomersDataRequest)
                 };
             }
         }
 
         /// <summary>
-        /// Pre trigger code.
+        /// Pre-execution stub: required by IRequestTriggerAsync, no custom logic here.
         /// </summary>
-        /// <param name="request">The request.</param>
+        /// <param name="request">Incoming data service request</param>
         public Task OnExecuting(Request request)
         {
-            // It's only stub to handle async signature 
+            // No-op: simply complete immediately to satisfy the async signature
             return Task.CompletedTask;
         }
 
         /// <summary>
-        /// Post request trigger
+        /// Post-execution logic: called after the data service request has been processed.
+        /// Adds custom properties based on the request type.
         /// </summary>
-        /// <param name="request">request</param>
-        /// <param name="response">response</param>
+        /// <param name="request">Original request message</param>
+        /// <param name="response">Response returned by the data service</param>
         public async Task OnExecuted(Request request, Response response)
         {
             switch (request)
             {
                 case GetChannelConfigurationDataRequest originalRequest:
+                    // Handle channel configuration enrichment
                     var data = response as SingleEntityDataServiceResponse<ChannelConfiguration>;
                     if (data != null && data.Entity != null && data.Entity.GetProperty(PropertyKey) == null)
                     {
-                        // In this example, we just put the configuration parameters as part of channelConfiguration property.
-                        var configurationParameters = (await request.RequestContext.ExecuteAsync<EntityDataServiceResponse<RetailConfigurationParameter>>(new GetConfigurationParametersDataRequest(originalRequest.ChannelId)).ConfigureAwait(false)).ToList();
+                        // Retrieve all retail configuration parameters for the channel asynchronously
+                        var configurationParameters = (await request.RequestContext
+                            .ExecuteAsync<EntityDataServiceResponse<RetailConfigurationParameter>>(
+                                new GetConfigurationParametersDataRequest(originalRequest.ChannelId))
+                            .ConfigureAwait(false))
+                            .ToList();
 
-                        // The reason we need a lock here because of thread-safety.
-                        // ChannelConfiguration is an object required in most crt request, and we cached in memory on the underlying ChannelDataService.
-                        // In case there is concurrent crt request, without lock here, it will modify against the same ChannelConfiguration and will result as 100% CPU usage in worst case.
-                        // NOTE: both SetProperty and ExtensionProperties are not thread-safe.
-                        // NOTE: same situation for DeviceConfiguration, in which it is also required in most crt request and is cached in underlying DataService.
+                        // Lock on the ChannelConfiguration entity to ensure thread safety
                         lock (data.Entity)
                         {
+                            // Double-check the property did not get set by another thread
                             if (data.Entity.GetProperty(PropertyKey) == null)
                             {
+                                // Set the extension property with the retrieved parameters
                                 data.Entity.SetProperty(PropertyKey, configurationParameters);
                             }
                         }
                     }
                     break;
+
                 case SearchCustomersDataRequest getCustomerSearchResultDataRequest:
+                    // Handle customer result enrichment
                     var res = (EntityDataServiceResponse<GlobalCustomer>)response;
                     foreach (var item in res)
                     {
-                        string value = "";
+                        string value = string.Empty;  // Default to empty if no data found
 
-                        // Wrap in using so DatabaseContext is disposed
+                        // Use a DatabaseContext in a using block to ensure disposal
                         using (var databaseContext = new DatabaseContext(request.RequestContext))
                         {
-                            // camel?cased to match your call
+                            // Prepare SQL parameters with the customer's account number
                             var configurationDataParameters = new ParameterSet
                             {
                                 ["@AccountNum"] = item.AccountNumber
                             };
 
-                            // Add ConfigureAwait(false) here
+                            // Execute the custom SQL query asynchronously
                             var configurationDataSet = await databaseContext
                                 .ExecuteQueryDataSetAsync(
                                     "SELECT REFNOEXT FROM ext.CONTOSOCUSTTABLEEXTENSION WHERE ACCOUNTNUM = @AccountNum",
                                     configurationDataParameters)
                                 .ConfigureAwait(false);
 
+                            // If at least one row is returned, extract the first column value as string
                             if (configurationDataSet.Tables[0].Rows.Count > 0)
                             {
                                 value = configurationDataSet.Tables[0].Rows[0][0] as string;
                             }
-                        }  // databaseContext.Dispose() called automatically here
+                        }  // DatabaseContext.Dispose() is invoked here automatically
 
+                        // Add the retrieved value to the customer's ExtensionProperties
                         item.ExtensionProperties.Add(new CommerceProperty()
                         {
                             Key = "RefNoExt",
@@ -119,6 +154,7 @@ namespace Contoso.CommerceRuntime.Triggers
                     break;
 
                 default:
+                    // Throw if an unsupported request type is encountered
                     throw new NotSupportedException($"Request '{request.GetType()}' is not supported.");
             }
         }
