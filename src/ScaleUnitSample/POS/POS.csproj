@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="viewextensions\search\README.md" />
-    <None Include="viewextensions\simpleproductdetails\Explanation.md" />
+    <None Include="viewextensions\simpleproductdetails\README.md" />
   </ItemGroup>
 
   <ItemGroup>
