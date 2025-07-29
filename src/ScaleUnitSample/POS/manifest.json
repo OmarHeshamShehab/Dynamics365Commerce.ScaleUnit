@@ -14,6 +14,17 @@
     },
     "extend": {
       "views": {
+        "CustomerAddEditView": {
+          "controlsConfig": {
+            "customControls": [
+              {
+                "controlName": "CustomerCustomField",
+                "htmlPath": "ViewExtensions/CustomerAddEdit/CustomerCustomField.html",
+                "modulePath": "ViewExtensions/CustomerAddEdit/CustomerCustomField"
+              }
+            ]
+          }
+        },
         "SearchView": {
           "productAppBarCommands": [
             { "modulePath": "ViewExtensions/Search/NavigateToExampleViewCommand" }
