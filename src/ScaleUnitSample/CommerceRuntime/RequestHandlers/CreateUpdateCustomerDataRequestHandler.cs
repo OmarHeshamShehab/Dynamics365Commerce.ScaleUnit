@@ -11,28 +11,31 @@ using Microsoft.Dynamics.Commerce.Runtime.RealtimeServices.Messages;
 namespace CommerceRuntime.RequestHandlers
 {
     /// <summary>
-    /// Create or update customer data request handler.
+    /// Request handler to create or update customer data asynchronously.
+    /// This handler persists the customer record locally, updates extended properties,
+    /// and attempts to push extended property changes to headquarters via real-time services.
     /// </summary>
     internal class CreateUpdateCustomerDataRequestHandler
         : SingleAsyncRequestHandler<CreateOrUpdateCustomerDataRequest>
     {
         protected override async Task<Response> Process(CreateOrUpdateCustomerDataRequest request)
         {
+            // Validate that the request is not null
             ThrowIf.Null(request, nameof(request));
 
-            // 1) Persist the core customer record into the channel DB
+            // 1) Persist the core customer record into the local channel database by invoking next handler
             var channelResponse = await this
                 .ExecuteNextAsync<SingleEntityDataServiceResponse<Customer>>(request)
                 .ConfigureAwait(false);
 
-            // 2) Pull out REFNOEXT if supplied (or empty)
+            // 2) Extract the extended property "REFNOEXT" from the request's customer entity, or default to empty string
             string refNoExt = request.Customer.ExtensionProperties?
                                   .Where(p => p.Key.Equals("REFNOEXT", StringComparison.OrdinalIgnoreCase))
                                   .Select(p => p.Value.StringValue)
                                   .FirstOrDefault()
                               ?? string.Empty;
 
-            // 3) Upsert into our local ext table
+            // 3) Upsert the REFNOEXT value into the local extension table using a stored procedure call
             using (var dbContext = new SqlServerDatabaseContext(request.RequestContext))
             {
                 var spParams = new ParameterSet();
@@ -46,7 +49,7 @@ namespace CommerceRuntime.RequestHandlers
                     .ConfigureAwait(false);
             }
 
-            // 4) Try to push to HQ via real-time service
+            // 4) Attempt to push the updated REFNOEXT property to headquarters via real-time service call
             try
             {
                 var rtRequest = new InvokeExtensionMethodRealtimeRequest(
@@ -58,21 +61,21 @@ namespace CommerceRuntime.RequestHandlers
                     .ExecuteAsync<InvokeExtensionMethodRealtimeResponse>(rtRequest)
                     .ConfigureAwait(false);
 
-                // Validate the two-element container
+                // Validate the response container contains at least two elements: success flag and message
                 if (rtResponse?.Result != null && rtResponse.Result.Count >= 2)
                 {
                     bool success = (bool)rtResponse.Result[0];
                     string message = rtResponse.Result[1]?.ToString();
 
+                    // If the update failed on HQ side, throw a business exception with message
                     if (!success)
                     {
-                        // HQ‑side business error: bubble it up
                         throw new CommerceException("UpdateCustomerExtendedPropertiesFailed", message);
                     }
                 }
                 else
                 {
-                    // Empty or malformed response: bubble it up
+                    // Response is missing or malformed; throw an exception to indicate this
                     throw new CommerceException(
                         "InvalidHQResponse",
                         "Headquarters response was missing or malformed.");
@@ -80,15 +83,15 @@ namespace CommerceRuntime.RequestHandlers
             }
             catch (CommunicationException)
             {
-                // HQ real-time endpoint not available or returned 204 → ignore
+                // HQ real-time endpoint not available or returned HTTP 204 No Content → safely ignore
             }
-            // Let CommerceException go through, so real HQ business errors still surface
+            // Allow CommerceException to propagate to surface HQ business errors
             catch
             {
-                // any other exception → ignore
+                // Catch and ignore all other exceptions to avoid breaking local processing
             }
 
-            // 5) Always return the channel response
+            // 5) Return the original response from the local channel data persistence operation
             return channelResponse;
         }
     }

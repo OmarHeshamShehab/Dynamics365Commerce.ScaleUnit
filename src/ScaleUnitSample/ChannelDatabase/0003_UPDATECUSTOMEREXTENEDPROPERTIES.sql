@@ -1,6 +1,12 @@
 -- ============================================================
--- Script Name : 0010_UPDATECUSTOMEREXTENEDPROPERTIES.sql
--- Description : Create or replace ext.UPDATECUSTOMEREXTENEDPROPERTIES
+-- Summary:
+-- This script creates or replaces the stored procedure ext.UPDATECUSTOMEREXTENEDPROPERTIES.
+-- The procedure updates or inserts (upserts) the REFNOEXT extended property
+-- for a customer identified by AccountNum in the extension table CONTOSOCUSTTABLEEXTENSION.
+-- It first looks up the customer RECID from the base CUSTTABLE and then performs a MERGE
+-- to either update the existing record or insert a new one in the extension table.
+-- Execution permission is granted to the DataSyncUsersRole for synchronization purposes.
+--
 -- Author      : [Omar Shehab]
 -- Created     : 2025-07-28
 -- ============================================================
@@ -10,7 +16,7 @@ GO
 SET QUOTED_IDENTIFIER ON;
 GO
 
--- If it already exists, drop it (so CREATE will work)
+-- Drop existing procedure if it exists to allow recreation
 IF OBJECT_ID(N'[ext].[UPDATECUSTOMEREXTENEDPROPERTIES]', 'P') IS NOT NULL
     DROP PROCEDURE [ext].[UPDATECUSTOMEREXTENEDPROPERTIES];
 GO
@@ -24,15 +30,18 @@ BEGIN
 
     DECLARE @RecId BIGINT;
 
-    -- lookup the parent RECID in AX.CUSTTABLE
+    -- Lookup the RECID of the customer in base AX.CUSTTABLE using AccountNum
     SELECT @RecId = RECID
       FROM [ax].[CUSTTABLE]
      WHERE ACCOUNTNUM = @AccountNum;
 
+    -- Exit early if no matching customer found
     IF @RecId IS NULL
         RETURN;  -- nothing to do if no matching customer
 
-    -- upsert into your EXT table
+    -- Perform UPSERT into the extension table:
+    -- If a record with the RECID exists, update REFNOEXT
+    -- Otherwise, insert a new record with RECID, AccountNum, and REFNOEXT
     MERGE INTO [ext].[CONTOSOCUSTTABLEEXTENSION] AS Target
     USING (VALUES(@RecId, @AccountNum, @REFNOEXT))
           AS Source(RECID, ACCOUNTNUM, REFNOEXT)
@@ -45,6 +54,7 @@ BEGIN
 END;
 GO
 
+-- Grant execute permission on the procedure to the DataSyncUsersRole for sync operations
 GRANT EXECUTE 
   ON OBJECT::[ext].[UPDATECUSTOMEREXTENEDPROPERTIES]
   TO [DataSyncUsersRole];

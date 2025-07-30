@@ -8,6 +8,14 @@ import { ObjectExtensions } from "PosApi/TypeExtensions";
 import { ProxyEntities } from "PosApi/Entities";
 import * as Controls from "PosApi/Consume/Controls";
 
+/*
+ * Summary:
+ * This class implements a custom control for the Customer Add/Edit view in POS.
+ * It adds support for the extended customer field "REFNOEXT" allowing users to view
+ * and edit this custom field within the POS interface.
+ * The control handles initialization, binding to the DOM element,
+ * updating the extension property on user input, and maintaining the customer data state.
+ */
 export default class CustomerCustomField extends CustomerAddEditCustomControlBase {
     private static readonly TEMPLATE_ID: string = "Contoso_Pos_Extensibility_Samples_CustomerCustomField";
 
@@ -21,6 +29,7 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
         super(id, context);
         this.refnoext = "";
         this.customerIsPerson = false;
+        // Event handler to track whether the current customer is a person
         this.customerUpdatedHandler = (data: CustomerAddEditCustomerUpdatedData) => {
             this.customerIsPerson =
                 data.customer.CustomerTypeValue === ProxyEntities.CustomerType.Person;
@@ -28,7 +37,8 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
     }
 
     /**
-     * Initializes the control.
+     * Initializes the control with the given page state.
+     * Sets visibility and customer type flag based on initial data.
      * @param state The initial state of the page used to initialize the control.
      */
     public init(state: ICustomerAddEditCustomControlState): void {
@@ -41,7 +51,9 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
     }
 
     /**
-     * Binds the control to the specified element.
+     * Binds the control to a specified HTML element.
+     * Clones the HTML template, appends it, and sets up event handlers.
+     * Initializes the input field value from the customer's extension properties.
      * @param element The element to which the control should be bound.
      */
     public onReady(element: HTMLElement): void {
@@ -49,11 +61,13 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
         const templateClone = templateElement.cloneNode(true);
         element.appendChild(templateClone);
 
+        // Get the input element for REFNOEXT and set up onchange event
         const idRefNoExt = element.querySelector("#IDREFNOEXT") as HTMLInputElement;
         idRefNoExt.onchange = () => {
             this.updateExtensionField(idRefNoExt.value);
         };
 
+        // Initialize the input value from the customer's extension properties if available
         let sampleExtensionPropertyValue = "";
         if (!ObjectExtensions.isNullOrUndefined(this.customer.ExtensionProperties)) {
             const sampleProperties = this.customer.ExtensionProperties.filter(
@@ -68,8 +82,8 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
     }
 
     /**
-     * Updates the REFNOEXT extension property on the customer.
-     * @param RefNoExt The new value for REFNOEXT.
+     * Updates the REFNOEXT extension property on the customer entity.
+     * @param RefNoExt The new value to set for the REFNOEXT property.
      */
     public updateExtensionField(RefNoExt: string): void {
         this._addOrUpdateExtensionProperty("REFNOEXT", {
@@ -78,7 +92,10 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
     }
 
     /**
-     * Gets the property value from the property bag by its key, optionally creating it if it does not exist.
+     * Adds a new extension property or updates an existing one by key.
+     * Ensures the customer's ExtensionProperties array is updated accordingly.
+     * @param key The key of the extension property to add or update.
+     * @param newValue The new value for the extension property.
      */
     private _addOrUpdateExtensionProperty(
         key: string,
@@ -90,6 +107,7 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
             (property: ProxyEntities.CommerceProperty) => property.Key === key
         );
 
+        // If property doesn't exist, create and add it
         if (ObjectExtensions.isNullOrUndefined(extensionProperty)) {
             const newProperty: ProxyEntities.CommerceProperty = {
                 Key: key,
@@ -100,9 +118,11 @@ export default class CustomerCustomField extends CustomerAddEditCustomControlBas
             }
             customer.ExtensionProperties.push(newProperty);
         } else {
+            // Otherwise, update existing property's value
             extensionProperty.Value = newValue;
         }
 
+        // Update the customer entity with the modified extension properties
         this.customer = customer;
     }
 }
