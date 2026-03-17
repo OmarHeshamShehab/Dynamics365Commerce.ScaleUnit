@@ -1,21 +1,21 @@
 <Project>
-  <PropertyGroup>
-    <BuildNumber Condition="'$(BuildNumber)' == ''">0.0</BuildNumber>
-    <MajorVersion>9.55</MajorVersion>
-    <Version>$(MajorVersion).$(BuildNumber)</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<BuildNumber Condition="'$(BuildNumber)' == ''">0.0</BuildNumber>
+		<MajorVersion>9.57</MajorVersion>
+		<Version>$(MajorVersion).$(BuildNumber)</Version>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <Publisher Condition="'$(Publisher)' == ''">CN=OHMS</Publisher>
-    <PublisherDisplayName Condition="'$(PublisherDisplayName)' == ''">OHMS</PublisherDisplayName>
-  </PropertyGroup>
+	<PropertyGroup>
+		<Publisher Condition="'$(Publisher)' == ''">CN=OHMS</Publisher>
+		<PublisherDisplayName Condition="'$(PublisherDisplayName)' == ''">OHMS</PublisherDisplayName>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <CommerceSdkPackagesVersion>[9.55.*-*,9.56)</CommerceSdkPackagesVersion>
-    <CommercePosPackagesVersion>[9.55.*-*,9.56)</CommercePosPackagesVersion>
-    <CommerceChannelPackagesVersion>[9.55.*-*,9.56)</CommerceChannelPackagesVersion>
-    <CommerceHwsPackagesVersion>[9.55.*-*,9.56)</CommerceHwsPackagesVersion>
-    <CommerceToolsPackagesVersion>[10.35.*-*,10.36)</CommerceToolsPackagesVersion>
-    <CommercePaymentsPackagesVersion>[10.53.*-*,10.54)</CommercePaymentsPackagesVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<CommerceSdkPackagesVersion>[9.57.*-*,9.58)</CommerceSdkPackagesVersion>
+		<CommercePosPackagesVersion>[9.57.*-*,9.58)</CommercePosPackagesVersion>
+		<CommerceChannelPackagesVersion>[9.57.*-*,9.58)</CommerceChannelPackagesVersion>
+		<CommerceHwsPackagesVersion>[9.57.*-*,9.58)</CommerceHwsPackagesVersion>
+		<CommerceToolsPackagesVersion>[10.37.*-*,10.39)</CommerceToolsPackagesVersion>
+		<CommercePaymentsPackagesVersion>[10.53.*-*,10.55)</CommercePaymentsPackagesVersion>
+	</PropertyGroup>
 </Project>
