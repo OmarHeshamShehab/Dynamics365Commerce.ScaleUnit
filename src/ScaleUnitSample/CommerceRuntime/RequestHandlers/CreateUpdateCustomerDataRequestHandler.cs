@@ -40,6 +40,7 @@ namespace CommerceRuntime.RequestHandlers
             {
                 var spParams = new ParameterSet();
                 spParams.Add("AccountNum", request.Customer.AccountNumber);
+                spParams.Add("DataAreaId", request.RequestContext.GetChannelConfiguration().InventLocationDataAreaId);
                 spParams.Add("REFNOEXT", refNoExt);
 
                 await dbContext.ExecuteStoredProcedureNonQueryAsync(
