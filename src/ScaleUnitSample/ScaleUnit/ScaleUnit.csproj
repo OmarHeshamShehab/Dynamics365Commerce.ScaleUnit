@@ -12,11 +12,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.ChannelDatabase" Version="9.57.26073.2">
+        <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.ChannelDatabase" Version="9.58.26163.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.ScaleUnit" Version="9.57.26073.2">
+        <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.ScaleUnit" Version="9.58.26163.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

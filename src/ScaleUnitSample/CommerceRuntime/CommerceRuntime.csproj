@@ -11,4 +11,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Dynamics.Commerce.Sdk.Runtime" Version="9.57.26073.2" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Dynamics.Commerce.Sdk.Analyzers" Version="9.58.26163.4">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
 </Project>
